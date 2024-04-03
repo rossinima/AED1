@@ -1,81 +1,27 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
 
-#define MAX_SIZE 10005
-
-typedef long long ll;
-
-struct Pair {
-    int first;
-    int second;
-};
-
-typedef struct Pair Pair;
-
-typedef struct {
-    Pair* arr;
-    int capacity;
-    int size;
-} PriorityQueue;
-
-PriorityQueue* createPriorityQueue(int capacity) {
-    PriorityQueue* pq = (PriorityQueue*)malloc(sizeof(PriorityQueue));
-    pq->arr = (Pair*)malloc(capacity * sizeof(Pair));
-    pq->capacity = capacity;
-    pq->size = 0;
-    return pq;
-}
-
-void push(PriorityQueue* pq, Pair pair) {
-    if (pq->size == pq->capacity) {
-        // Queue is full, expand the capacity
-        pq->capacity *= 2;
-        pq->arr = (Pair*)realloc(pq->arr, pq->capacity * sizeof(Pair));
+int main(){
+    
+    int quantidade, operacoes;
+    int vetor[10005];
+    cin >> quantidade >> operacoes;
+    for(int indice = 1; indice <= quantidade; indice++) cin >> vetor[indice];
+    int resultado = 0;
+    
+    priority_queue < pair < int, int >> fila;
+    for(int indice = 1; indice <= quantidade; indice++) fila.push(make_pair(0, -indice));
+    while(operacoes--){
+        int constante;
+        cin >> constante;
+        int identificador = -fila.top().second;
+        int nivel = -fila.top().first;
+        fila.pop();
+        fila.push(make_pair(-(nivel+vetor[identificador]*constante), -identificador));
+        resultado = max(resultado, nivel+vetor[identificador]*constante);
     }
-    pq->arr[pq->size] = pair;
-    pq->size++;
-}
-
-Pair pop(PriorityQueue* pq) {
-    int index = 0;
-    for (int i = 1; i < pq->size; i++) {
-        if (pq->arr[i].first < pq->arr[index].first) {
-            index = i;
-        }
-    }
-    Pair temp = pq->arr[index];
-    for (int i = index; i < pq->size - 1; i++) {
-        pq->arr[i] = pq->arr[i + 1];
-    }
-    pq->size--;
-    return temp;
-}
-
-int main() {
-    int n, m;
-    int v[MAX_SIZE];
-    scanf("%d %d", &n, &m);
-    for (int i = 1; i <= n; i++) scanf("%d", &v[i]);
-    ll resposta = 0;
-
-    PriorityQueue* fila = createPriorityQueue(n);
-    for (int i = 1; i <= n; i++) push(fila, (Pair){0, -i});
-
-    while (m--) {
-        int c;
-        scanf("%d", &c);
-        Pair top = pop(fila);
-        int id = -top.second;
-        int l = -top.first;
-        int new_value = l + v[id] * c;
-        push(fila, (Pair){-new_value, -id});
-        resposta = resposta > new_value ? resposta : new_value;
-    }
-
-    printf("%lld\n", resposta);
-
-    free(fila->arr);
-    free(fila);
-
-    return 0;
+    
+    printf("%d\n", resultado);
+    
 }
