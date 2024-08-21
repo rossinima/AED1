@@ -1,0 +1,26 @@
+#include <stdio.h>
+ 
+int main() {
+ 
+    int n, i, j;
+    double nota, n1, n2, n3, media;
+    scanf("%d", &n);
+    for(i = 1; i <= n; i++){
+        for(j = 1; j <= 3; j++){
+           scanf("%lf", &nota);
+           if(j == 1){
+               n1 = nota * 2;
+           }
+           else if(j == 2){
+               n2 = nota * 3;
+           }
+           else if(j == 3){
+               n3 = nota * 5;
+           }
+        }
+        media = ((n1 + n2 + n3)/10);
+        printf("%.1lf\n", media);
+    }
+    
+    return 0;
+}
