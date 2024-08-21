@@ -1,0 +1,11 @@
+#include <stdio.h>
+ 
+int main() {
+    
+    float SpentTime, Speed, TotalLiters;
+    scanf("%f %f", &SpentTime, &Speed);
+    TotalLiters = ((Speed * SpentTime) / 12);
+    printf("%.3f\n", TotalLiters);
+    
+    return 0;
+}
