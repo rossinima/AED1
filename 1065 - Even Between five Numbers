@@ -1,0 +1,16 @@
+#include <stdio.h>
+ 
+int main() {
+ 
+    int a, cont, qtd_par;
+    cont = qtd_par = 0;
+    while(cont < 5){
+        scanf("%d", &a);
+        if(a % 2 == 0){
+            qtd_par++;
+        }
+        cont++;
+    }
+    printf("%d valores pares\n", qtd_par);
+    return 0;
+}
