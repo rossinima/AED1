@@ -1,0 +1,14 @@
+#include <stdio.h>
+int main() {
+    int hora1, hora2, min1, min2, diferenca;
+    scanf("%d %d %d %d", &hora1, &min1, &hora2, &min2);
+    diferenca = ((hora2 * 60) + min2) - ((hora1 * 60) + min1);
+    if(diferenca <= 0){
+        diferenca += 24*60;
+    }
+    printf("O JOGO DUROU %d HORA(S) E %d MINUTO(S)\n", diferenca/60, diferenca % 60);
+    
+    return 0;
+    
+    
+}
