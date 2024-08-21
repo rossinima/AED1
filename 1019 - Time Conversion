@@ -1,0 +1,15 @@
+#include <stdio.h>
+ 
+int main() {
+ 
+    int N;
+    float horas, minutos, segundos;
+    scanf("%d",&N);
+    horas = (N / 3600);
+    minutos = (N % 3600)/60;
+    segundos = (N % 3600)%60;
+    printf("%0.f:%0.f:%.0f\n", horas, minutos, segundos);
+    
+ 
+    return 0;
+}
