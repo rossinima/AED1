@@ -1,0 +1,14 @@
+#include <stdio.h>
+ 
+int main() {
+ 
+    int X, i, impar;
+    scanf("%d", &X);
+    impar = 1;
+    for(i = 0; impar <= X; i++){
+        printf("%d\n", impar);
+        impar += 2;
+    }
+ 
+    return 0;
+}
