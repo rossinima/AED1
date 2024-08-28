@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <math.h>
+
+long long find_smallest_prime_factor(long long n) {
+    if (n % 2 == 0) return 2;
+    for (long long i = 3; i <= sqrt(n); i += 2) {
+        if (n % i == 0) return i;
+    }
+    return n;
+}
+
+int main(void) {
+    long long n;
+
+    while (scanf("%lli", &n) && n != 0) {
+        long long p = 0, q = 0, r = 0;
+        long long sqrt_n = (long long) cbrt(n);  
+
+        for (long long i = 3; i <= sqrt_n; i += 2) {
+            if (n % i == 0 && find_smallest_prime_factor(i) == i) {
+                p = i;
+                break;
+            }
+        }
+
+        if (p == 0) {
+            p = n; 
+        }
+
+        long long n_div_p = n / p;
+
+        q = find_smallest_prime_factor(n_div_p);
+        r = n_div_p / q;
+
+        printf("%lli = %lli x %lli x %lli\n", p * q * r, p, q, r);
+    }
+
+    return 0;
+}
