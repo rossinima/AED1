@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_C 200
+#define MAX_R 60
+
+typedef struct {
+    int u, v, w;
+} Edge;
+
+Edge edges[MAX_C];
+int parent[MAX_R];
+
+// Função para encontrar o representante do conjunto ao qual o elemento i pertence (com compressão de caminho)
+int find(int i) {
+    return (parent[i] == i) ? i : (parent[i] = find(parent[i]));
+}
+
+// Função para comparar as arestas pelo peso
+int compare(const void *a, const void *b) {
+    return ((Edge*)a)->w - ((Edge*)b)->w;
+}
+
+// Função para aplicar o algoritmo de Kruskal e encontrar o custo total da MST
+int kruskal(int R, int C) {
+    int i, total_cost = 0;
+    
+    // Ordena as arestas pelo peso
+    qsort(edges, C, sizeof(Edge), compare);
+    
+    // Inicializa o array de pais 
+    for (i = 1; i <= R; ++i)
+        parent[i] = i;
+    
+    // Arestas ordenadas
+    for (i = 0; i < C; ++i) {
+        int u_rep = find(edges[i].u);
+        int v_rep = find(edges[i].v);
+        
+        // Se os dois vértices não estão na mesma componente, une-os
+        if (u_rep != v_rep) {
+            parent[u_rep] = v_rep;
+            total_cost += edges[i].w;
+        }
+    }
+    
+    return total_cost;
+}
+
+int main() {
+    int R, C, i;
+    
+    // Lê o número de roteadores e o número de cabos
+    scanf("%d %d", &R, &C);
+    
+    // Lê as arestas
+    for (i = 0; i < C; ++i) {
+        scanf("%d %d %d", &edges[i].u, &edges[i].v, &edges[i].w);
+    }
+    
+    // Imprime o custo total 
+    printf("%d\n", kruskal(R, C));
+    
+    return 0;
+}
