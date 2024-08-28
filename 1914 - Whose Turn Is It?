@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Player {
+    char name[50];
+    char choice[10];
+};
+
+int main(void)
+{
+    int num_tests, sum, winner_index;
+    struct Player players[2];
+
+    scanf("%i", &num_tests);
+
+    for (int i = 0; i < num_tests; ++i)
+    {
+        scanf("%s %s %s %s", players[0].name, players[0].choice, players[1].name, players[1].choice);
+        int value1, value2;
+        scanf("%i %i", &value1, &value2);
+
+        sum = value1 + value2;
+
+        if (sum % 2 == 0)
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                if (strcmp(players[j].choice, "PAR") == 0)
+                {
+                    winner_index = j;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                if (strcmp(players[j].choice, "IMPAR") == 0)
+                {
+                    winner_index = j;
+                    break;
+                }
+            }
+        }
+
+        printf("%s\n", players[winner_index].name);
+    }
+
+    return 0;
+}
