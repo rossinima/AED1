@@ -1,0 +1,119 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+struct dequeNo
+{
+    int num;
+    struct dequeNo *prox, *ant;
+};
+
+struct deque
+{
+    int tam;
+    struct dequeNo *ini, *fim;
+};
+
+void push(struct deque *d, int num)
+{
+    d->tam++;
+    struct dequeNo *novo = (struct dequeNo *)malloc(sizeof(struct dequeNo));
+
+    novo->num = num;
+    novo->prox = NULL;
+    novo->ant = d->fim;
+    if (d->fim != NULL)
+        d->fim->prox = novo;
+    else
+        d->ini = novo;
+    d->fim = novo;
+}
+
+void pop(struct deque *d)
+{
+    if (d->tam > 0)
+    {
+        d->tam--;
+        struct dequeNo *antigo = d->ini;
+        d->ini = d->ini->prox;
+        free(antigo);
+        if (d->ini != NULL)
+            d->ini->ant = NULL;
+        else
+            d->fim = NULL;
+    }
+}
+
+int front(struct deque *d)
+{
+    return d->ini->num;
+}
+
+int back(struct deque *d)
+{
+    return d->fim->num;
+}
+
+int size(struct deque *d)
+{
+    return d->tam;
+}
+
+int empty(struct deque *d)
+{
+    return d->tam == 0;
+}
+
+void init(struct deque *d)
+{
+    d->tam = 0;
+    d->ini = NULL;
+    d->fim = NULL;
+}
+
+void destroy(struct deque *d)
+{
+    while (!empty(d))
+    {
+        pop(d);
+    }
+}
+
+int main()
+{
+    int n, prim;
+    struct deque cartas;
+
+    while (scanf("%d", &n))
+    {
+        if (!n)
+            break;
+
+        init(&cartas);
+
+        for (int i = 1; i <= n; ++i)
+        {
+            push(&cartas, i);
+        }
+
+        prim = 1;
+        printf("Discarded cards: ");
+        while (size(&cartas) > 1)
+        {
+            if (!prim)
+                printf(", ");
+            else
+                prim = 0;
+
+            printf("%d", front(&cartas));
+
+            pop(&cartas);
+            push(&cartas, front(&cartas));
+            pop(&cartas);
+        }
+        printf("\nRemaining card: %d\n", front(&cartas));
+
+        destroy(&cartas);
+    }
+
+    return 0;
+}
