@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXN 500
+
+char board[MAXN][MAXN];
+int black_prefix[MAXN+1][MAXN+1];
+int white_prefix[MAXN+1][MAXN+1];
+int n, p;
+
+void build_prefix_sums() {
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            black_prefix[i][j] = 0;
+            white_prefix[i][j] = 0;
+        }
+    }
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            black_prefix[i][j] = black_prefix[i-1][j] + black_prefix[i][j-1] - black_prefix[i-1][j-1] + (board[i-1][j-1] == 'B');
+            white_prefix[i][j] = white_prefix[i-1][j] + white_prefix[i][j-1] - white_prefix[i-1][j-1] + (board[i-1][j-1] == 'W');
+        }
+    }
+}
+
+int count_subareas(char player) {
+    int count = 0;
+    for (int size = 1; size <= n; size++) {
+        for (int i = 0; i <= n - size; i++) {
+            for (int j = 0; j <= n - size; j++) {
+                int x1 = i, y1 = j;
+                int x2 = i + size - 1, y2 = j + size - 1;
+                
+                int black_sum = black_prefix[x2+1][y2+1] - black_prefix[x1][y2+1] - black_prefix[x2+1][y1] + black_prefix[x1][y1];
+                int white_sum = white_prefix[x2+1][y2+1] - white_prefix[x1][y2+1] - white_prefix[x2+1][y1] + white_prefix[x1][y1];
+                
+                if (player == 'B' && black_sum > 0 && white_sum == 0) {
+                    count++;
+                } else if (player == 'W' && white_sum > 0 && black_sum == 0) {
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
+}
+
+int main() {
+    scanf("%d %d", &n, &p);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            board[i][j] = '.';
+        }
+    }
+
+    int l, c;
+    for (int i = 0; i < p; i++) {
+        scanf("%d %d", &l, &c);
+        board[l - 1][c - 1] = 'B';
+    }
+
+    for (int i = 0; i < p; i++) {
+        scanf("%d %d", &l, &c);
+        board[l - 1][c - 1] = 'W';
+    }
+
+    build_prefix_sums();
+
+    int black_subareas = count_subareas('B');
+    int white_subareas = count_subareas('W');
+
+    printf("%d %d\n", black_subareas, white_subareas);
+
+    return 0;
+}
