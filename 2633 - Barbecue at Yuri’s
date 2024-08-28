@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct contestant {
+    char str[21];
+    int num;
+};
+
+
+int compare(const void *a, const void *b) {
+    struct contestant *c1 = (struct contestant *)a;
+    struct contestant *c2 = (struct contestant *)b;
+    return c1->num - c2->num;
+}
+
+int main(void)
+{
+    int n;
+
+    while (scanf("%i", &n) != EOF) {
+        struct contestant ch[n];
+
+        for (int i = 0; i < n; ++i)
+            scanf("%s %i", ch[i].str, &ch[i].num);
+
+        qsort(ch, n, sizeof(struct contestant), compare);
+
+        for (int i = 0; i < n; ++i) {
+            printf("%s", ch[i].str);
+            if (i < n - 1) {
+                printf(" ");
+            } else {
+                printf("\n");
+            }
+        }
+    }
+
+    return 0;
+}
