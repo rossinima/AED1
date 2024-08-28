@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAXSIZE 50000 
+
+typedef struct { 
+    int u, v, w; 
+} edge;
+
+edge g[MAXSIZE];
+int p[MAXSIZE];
+
+// Função de comparação usada pelo qsort para ordenar as arestas por peso
+int compara(const void *a, const void *b) {
+    return ((edge *)a)->w - ((edge *)b)->w;
+}
+
+// Função que encontra o representante do conjunto ao qual o elemento i pertence
+int find(int i) {
+    return (p[i] == i) ? i : (p[i] = find(p[i]));
+}
+
+// Função que implementa o algoritmo de Kruskal para encontrar o peso da árvore geradora mínima
+int kruskal(int n) {
+    int i, ans = 0;  
+    for (i = 0; i < n; ++i) {
+        int v = find(g[i].v), u = find(g[i].u);
+        if (v != u) {
+            p[v] = u;
+            ans += g[i].w;
+        }
+    }
+    return ans;
+}
+
+int main() {
+    int m, n, i;
+    while (scanf("%d %d", &m, &n), m && n) {
+        for (i = 0; i < n; ++i) 
+            scanf("%d %d %d", &g[i].v, &g[i].u, &g[i].w);
+
+        qsort(g, n, sizeof(edge), compara);
+
+        // Inicializa o array de pais para o union-find
+        for (i = 0; i < m; ++i) 
+            p[i] = i;
+
+        // Imprime o resultado com uma nova linha no final para garantir a formatação correta
+        printf("%d\n", kruskal(n));
+    }
+    return 0;
+}
