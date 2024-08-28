@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(void)
+{
+    int n, x, max_value;
+
+    while (1)
+    {
+        scanf("%i", &n);
+        if (n == 0)
+            break;
+
+        max_value = 1 << (2 * (n - 1));  // Calcula o maior valor (último valor da matriz)
+        x = log10(max_value) + 1;        // Calcula o número de dígitos do maior valor
+
+        for (int i = 0; i < n; ++i)
+        {
+            int value = 1 << i;  // Inicializa o valor para cada linha
+            for (int j = 0; j < n; ++j)
+            {
+                if (j == n - 1)
+                    printf("%*i\n", x, value);
+                else
+                    printf("%*i ", x, value);
+                
+                value <<= 1;  // Multiplica por 2 (shift à esquerda)
+            }
+        }
+
+        printf("\n");
+    }
+
+    return 0;
+}
