@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main(void)
+{
+    int a, b;
+
+    scanf("%i %i", &a, &b);
+
+    // Imprime o maior valor ou o valor de 'a' se ambos forem iguais
+    printf("%i\n", (a > b) ? a : b);
+
+    return 0;
+}
